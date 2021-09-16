@@ -1,0 +1,12 @@
+{
+	"type": "module",
+	"scripts": {
+		"test": "ava"
+	},
+	"devDependencies": {
+		"ava": "^3.15.0"
+	},
+	"dependencies": {
+		"just-clone": "^3.2.1"
+	}
+}
