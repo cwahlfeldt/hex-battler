@@ -18,6 +18,7 @@ Dorky story time: the game is about a person(alien?) thats been casted out, bani
 10. The only action the player takes is moving... attacking happens as a result of moving when its your turn and you are exactly one tile away from the enemy. Read next rule!
 11. When enemy moves next to player, the player can attack on their subsequent turn. (sorta similar to chess.. when in range, on your turn, you can attack)
 12. If player moves next to an enemy, the enemy can attack the player
+13. ... more to come
 
 ## Ideas
 1. Powerups to attack from a distance
@@ -25,3 +26,4 @@ Dorky story time: the game is about a person(alien?) thats been casted out, bani
 3. Mining planets on tiles that 
 4. Enemies can merge when the move to the same tiles and become stronger
 5. Endless hex grid like [Vallerys Between](https://apps.apple.com/us/app/valleys-between/id1348135354)
+6. ... more to come
