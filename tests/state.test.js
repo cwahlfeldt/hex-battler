@@ -27,9 +27,9 @@ test('player should be able to start at a position', (t) => {
     t.is(player.position.x, 1)
     t.is(player.position.y, 1)
 })
-
-test('create a map of tiles', (t) => {
-    newGame()
-    const { map } = getState()
-    t.is(, 1)
-})
+//
+// test('create a map of tiles', (t) => {
+//     newGame()
+//     const { map } = getState()
+//     t.is(, 1)
+// })
