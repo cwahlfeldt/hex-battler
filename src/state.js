@@ -33,10 +33,12 @@ export const newGame = (playerRow, playerCol) => {
     return game
 }
 
-// export const action = (game, action) => {
-//     const newGame = clone(game)
-//     if (action === 'LEFT') {
-//         newGame ===
-//     }
-//     return newGame
-// }
+export const action = (gameState, action) => {
+    if (action === null ||
+        typeof action !== 'object' ||
+        typeof action.type !== 'string' ||
+        !action.type.length
+    ) { return gameState }
+
+    return clone(gameState)
+}

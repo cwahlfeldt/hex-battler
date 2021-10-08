@@ -1,5 +1,5 @@
 import test from 'ava'
-import { getState, createTile, newGame } from '../src/state.js'
+import { getState, action, newGame } from '../src/state.js'
 
 
 test('a tile has an x position', (t) => {
@@ -46,6 +46,33 @@ test('map has a player', (t) => {
     t.deepEqual(game.map, expectPlayerToBeOnMap)
 })
 
+test('action always returns new object', (t) => {
+    const initial = {}
+    const newState = action(initial, {})
+    t.not(initial, newState)
+})
+
+test('action returns previous state on invalid action', (t) => {
+    const initial = {}
+    t.is(action(initial, false), initial)
+    t.is(action(initial, null), initial)
+    t.is(action(initial, ''), initial)
+    t.is(action(initial, {type: ''}), initial)
+    t.is(action(initial), initial)
+})
+
+// test('player cant move left off map', (t) => {
+//     const expectPlayerToBeOnMap = [
+//         [{player: {name: 'player1'}}, {}, {}, {}, {}],
+//             [{}, {}, {}, {}, {}],
+//         [{}, {}, {}, {}, {}],
+//             [{}, {}, {}, {}, {}],
+//         [{}, {}, {}, {}, {}],
+//     ]
+//     const game = newGame(0, 0)
+//
+//     t.deepEqual(game.map, expectPlayerToBeOnMap)
+// })
 
 // TODO
 // check bounds of map
