@@ -1,26 +1,26 @@
 import test from 'ava'
-import { getState, action, newGame } from '../src/state.js'
+import { action, newGame } from '../src/state.js'
 
 
-test('a tile has an x position', (t) => {
-    const { tile } = getState()
-    t.is(tile.position.x, 0)
-})
+// test('a tile has an x position', (t) => {
+//     const
+//     t.is(tile.position.x, 0)
+// })
 
-test('a tile has a y position', (t) => {
-    const { tile } = getState()
-    t.is(tile.position.y, 0)
-})
-
-test('player has an x position', (t) => {
-    const { player } = getState()
-    t.is(player.position.x, 0)
-})
-
-test('player has a y position', (t) => {
-    const { player } = getState()
-    t.is(player.position.y, 0)
-})
+// test('a tile has a y position', (t) => {
+//     const { tile } = getState()
+//     t.is(tile.position.y, 0)
+// })
+//
+// test('player has an x position', (t) => {
+//     const { player } = getState()
+//     t.is(player.position.x, 0)
+// })
+//
+// test('player has a y position', (t) => {
+//     const { player } = getState()
+//     t.is(player.position.y, 0)
+// })
 
 test('can create map', (t) => {
     const expectNewGame = [
@@ -52,13 +52,26 @@ test('action always returns new object', (t) => {
     t.not(initial, newState)
 })
 
-test('action returns previous state on invalid action', (t) => {
+test('action returns previous state when invalid', (t) => {
     const initial = {}
     t.is(action(initial, false), initial)
     t.is(action(initial, null), initial)
     t.is(action(initial, ''), initial)
-    t.is(action(initial, {type: ''}), initial)
     t.is(action(initial), initial)
+    t.deepEqual(action(initial, {type: ''}), initial)
+})
+
+test('player can move left', (t) => {
+    const expectPlayerToHaveMovedLeft = [
+        [{player: {name: 'player1'}}, {}, {}, {}, {}],
+        [{}, {}, {}, {}, {}],
+        [{}, {}, {}, {}, {}],
+        [{}, {}, {}, {}, {}],
+        [{}, {}, {}, {}, {}],
+    ]
+    const game = newGame(1, 0)
+    const newState = action(game, {type: 'left'})
+    t.deepEqual(expectPlayerToHaveMovedLeft, newState)
 })
 
 // test('player cant move left off map', (t) => {
