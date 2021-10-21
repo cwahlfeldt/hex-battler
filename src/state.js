@@ -22,11 +22,9 @@ export const newGame = (playerRow = 0, playerCol = 0) => {
         map: tileMap
     })
 
-    if (typeof playerRow !== 'undefined' && typeof playerCol !== 'undefined') {
-        const player = createPlayer(playerCol, playerRow)
-        game.map[playerRow][playerCol] = { player }
-        game.player = player
-    }
+    const player = createPlayer(playerCol, playerRow)
+    game.map[playerRow][playerCol] = { player }
+    game.player = player
 
     return game
 }
