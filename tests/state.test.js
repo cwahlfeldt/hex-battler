@@ -1,49 +1,22 @@
 import test from 'ava'
 import { action, newGame } from '../src/state.js'
 
-
-// test('a tile has an x position', (t) => {
-//     const
-//     t.is(tile.position.x, 0)
-// })
-
-// test('a tile has a y position', (t) => {
-//     const { tile } = getState()
-//     t.is(tile.position.y, 0)
-// })
-//
-// test('player has an x position', (t) => {
-//     const { player } = getState()
-//     t.is(player.position.x, 0)
-// })
-//
-// test('player has a y position', (t) => {
-//     const { player } = getState()
-//     t.is(player.position.y, 0)
-// })
+const expectDefaultMap = [
+    [{player: {name: 'player1', position: {x:0,y:0}}}, {}, {}, {}, {}],
+    [{isBlocked: true}, {}, {}, {}, {}],
+    [{}, {}, {}, {}, {}],
+    [{}, {}, {}, {}, {}],
+    [{}, {}, {}, {}, {}],
+]
 
 test('can create map', (t) => {
-    const expectNewGame = [
-        [{}, {}, {}, {}, {}],
-        [{isBlocked: true}, {}, {}, {}, {}],
-        [{}, {}, {}, {}, {}],
-        [{}, {}, {}, {}, {}],
-        [{}, {}, {}, {}, {}],
-    ]
     const game = newGame()
-    t.deepEqual(game.map, expectNewGame)
+    t.deepEqual(game.map, expectDefaultMap)
 })
 
 test('map has a player', (t) => {
-    const expectPlayerToBeOnMap = [
-        [{player: {name: 'player1'}}, {}, {}, {}, {}],
-            [{isBlocked: true}, {}, {}, {}, {}],
-        [{}, {}, {}, {}, {}],
-            [{}, {}, {}, {}, {}],
-        [{}, {}, {}, {}, {}],
-    ]
     const game = newGame(0, 0)
-    t.deepEqual(game.map, expectPlayerToBeOnMap)
+    t.deepEqual(game.map, expectDefaultMap)
 })
 
 test('action always returns new object', (t) => {
@@ -62,34 +35,23 @@ test('action returns previous state when invalid', (t) => {
 })
 
 test('player can move left', (t) => {
-    const expectPlayerToHaveMovedLeft = [
-        [{player: {name: 'player1'}}, {}, {}, {}, {}],
-        [{}, {}, {}, {}, {}],
+    const game = newGame(0, 1)
+    const newState = action(game, {type: 'left'})
+    t.deepEqual(expectDefaultMap, newState.map)
+})
+
+test('player can move right', (t) => {
+    const expectedToMoveRight = [
+        [{}, {player: {name: 'player1', position: {x:0,y:0}}}, {}, {}, {}],
+        [{isBlocked: true}, {}, {}, {}, {}],
         [{}, {}, {}, {}, {}],
         [{}, {}, {}, {}, {}],
         [{}, {}, {}, {}, {}],
     ]
-    const game = newGame(1, 0)
-    const newState = action(game, {type: 'left'})
-    t.deepEqual(expectPlayerToHaveMovedLeft, newState)
+    const game = newGame(0, 0)
+    const newState = action(game, {type: 'right'})
+    t.deepEqual(expectedToMoveRight, newState.map)
 })
-
-// test('player cant move left off map', (t) => {
-//     const expectPlayerToBeOnMap = [
-//         [{player: {name: 'player1'}}, {}, {}, {}, {}],
-//             [{}, {}, {}, {}, {}],
-//         [{}, {}, {}, {}, {}],
-//             [{}, {}, {}, {}, {}],
-//         [{}, {}, {}, {}, {}],
-//     ]
-//     const game = newGame(0, 0)
-//
-//     t.deepEqual(game.map, expectPlayerToBeOnMap)
-// })
-
-// TODO
-// check bounds of map
-// if anything invalid tried to happen, just return old state and bail
 
 // TODO
 // start player somewhere else

@@ -9,27 +9,62 @@ const tileMap = [
     [{}, {}, {}, {}, {}],
 ]
 
-const createTile = () => ({
-    position: {x: 0, y: 0},
-    isWall: false,
-})
-const createPlayer = () => ({
-    position: {x: 0, y: 0},
+const createPlayer = (x = 0, y = 0) => ({
+    name: 'player1',
+    position: {x, y},
 })
 
-const defaultTile = createTile()
 const defaultPlayer = createPlayer()
-export const newGame = (playerRow, playerCol) => {
-    const game = clone({map: tileMap})
+
+export const newGame = (playerRow = 0, playerCol = 0) => {
+    const game = clone({
+        player: defaultPlayer,
+        map: tileMap
+    })
+
     if (typeof playerRow !== 'undefined' && typeof playerCol !== 'undefined') {
-        game.map[playerRow][playerCol] = {player: {name: 'player1'}}
+        const player = createPlayer(playerCol, playerRow)
+        game.map[playerRow][playerCol] = { player }
+        game.player = player
     }
+
     return game
 }
 
 export const action = (gameState, action) => {
-    if (isInvalidAction(action)) {
+    if (isInvalidAction(action))
         return gameState
+
+    const newState = clone(gameState)
+
+    switch (action.type) {
+        case 'left':
+            movePlayerLeft(newState)
+            break
+        case 'right':
+            movePlayerRight(newState)
+            break
+        default:
+            break
     }
-    return clone(gameState)
+
+    return newState
+}
+
+function movePlayerLeft({player, map}) {
+    const x = player.position.x
+    const y = player.position.y
+
+    map[y][x] = {}
+    map[y][x - 1] = {player}
+    player.position.x = 0;
+}
+
+function movePlayerRight({player, map}) {
+    const x = player.position.x
+    const y = player.position.y
+
+    map[y][x] = {}
+    map[y][x + 1] = {player}
+    player.position.x = 0;
 }
