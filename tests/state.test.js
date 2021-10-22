@@ -1,11 +1,11 @@
 import test from 'ava'
-import { action, newGame } from '../src/state.js'
+import { action, newGame, createPlayer } from '../src/state.js'
 
 const expectDefaultMap = [
-    [{player: {name: 'player1', position: {x:0,y:0}}}, {}, {}, {}, {}],
-    [{isBlocked: true}, {}, {}, {}, {}],
+    [{player: createPlayer()}, {}, {}, {}, {}],
+     [{}, {}, {}, {}, {}],
     [{}, {}, {}, {}, {}],
-    [{}, {}, {}, {}, {}],
+     [{}, {}, {}, {}, {}],
     [{}, {}, {}, {}, {}],
 ]
 
@@ -22,7 +22,7 @@ test('map has a player', (t) => {
 test('action always returns new object', (t) => {
     const initial = {}
     const newState = action(initial, {})
-    t.not(initial, newState)
+    t.deepEqual(initial, newState)
 })
 
 test('action returns previous state when invalid', (t) => {
@@ -35,22 +35,94 @@ test('action returns previous state when invalid', (t) => {
 })
 
 test('player can move left', (t) => {
-    const game = newGame(0, 1)
+    const game = newGame(1, 0)
     const newState = action(game, {type: 'left'})
     t.deepEqual(expectDefaultMap, newState.map)
 })
 
 test('player can move right', (t) => {
+    const p = {player: createPlayer(1,0)}
     const expectedToMoveRight = [
-        [{}, {player: {name: 'player1', position: {x:0,y:0}}}, {}, {}, {}],
-        [{isBlocked: true}, {}, {}, {}, {}],
+        [{}, p, {}, {}, {}],
+         [{}, {}, {}, {}, {}],
         [{}, {}, {}, {}, {}],
-        [{}, {}, {}, {}, {}],
+         [{}, {}, {}, {}, {}],
         [{}, {}, {}, {}, {}],
     ]
     const game = newGame(0, 0)
+
     const newState = action(game, {type: 'right'})
     t.deepEqual(expectedToMoveRight, newState.map)
+})
+
+test('player can move diagonally upper left', (t) => {
+    const p = {player: createPlayer(0,0)}
+    const expectedToMoveUpLeft = [
+        [p,{},{},{},{}],
+         [{},{},{},{},{}],
+        [{},{},{},{},{}],
+         [{},{},{},{},{}],
+        [{},{},{},{},{}],
+    ]
+    const game = newGame(1, 1)
+    const newState = action(game, {type: 'upLeft'})
+    t.deepEqual(expectedToMoveUpLeft, newState.map)
+})
+
+test('player can move diagonally upper right', (t) => {
+    const p = {player: createPlayer(1,0)}
+    const expectedToMoveUpRight = [
+        [{},p,{},{},{}],
+         [{},{},{},{},{}],
+        [{},{},{},{},{}],
+         [{},{},{},{},{}],
+        [{},{},{},{},{}],
+    ]
+    const game = newGame(0, 1)
+    const newState = action(game, {type: 'upRight'})
+    t.deepEqual(expectedToMoveUpRight, newState.map)
+})
+
+test('player can move diagonally down left', (t) => {
+    const p = {player: createPlayer(0,1)}
+    const expectedToMoveDownLeft = [
+        [{},{},{},{},{}],
+        [p,{},{},{},{}],
+        [{},{},{},{},{}],
+        [{},{},{},{},{}],
+        [{},{},{},{},{}],
+    ]
+    const game = newGame(1, 0)
+    const newState = action(game, {type: 'downLeft'})
+    t.deepEqual(expectedToMoveDownLeft, newState.map)
+})
+
+test('player can move diagonally down right', (t) => {
+    const p = {player: createPlayer(2,1)}
+    const expectedToMoveDownRight = [
+        [{},{},{},{},{}],
+        [{},{},p,{},{}],
+        [{},{},{},{},{}],
+        [{},{},{},{},{}],
+        [{},{},{},{},{}],
+    ]
+    const game = newGame(1, 0)
+    const newState = action(game, {type: 'downRight'})
+    t.deepEqual(expectedToMoveDownRight, newState.map)
+})
+
+test('player cant move off map', (t) => {
+    const p = {player: createPlayer(-1,1)}
+    const expectedToNotMoveLeft = [
+        [{},{},{},{},{}],
+        [p,{},{},{},{}],
+        [{},{},{},{},{}],
+        [{},{},{},{},{}],
+        [{},{},{},{},{}],
+    ]
+    const game = newGame(0, 1)
+    const newState = action(game, {type: 'left'})
+    t.deepEqual(expectedToNotMoveLeft, newState.map)
 })
 
 // TODO
